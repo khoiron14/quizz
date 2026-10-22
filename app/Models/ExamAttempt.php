@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\AttemptStatus;
+use Carbon\CarbonInterface;
 use Database\Factories\ExamAttemptFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -87,10 +88,10 @@ class ExamAttempt extends Model
     /**
      * Calculate absolute deadline timestamp for this attempt.
      */
-    public function getDeadline(): Carbon
+    public function getDeadline(): CarbonInterface
     {
         $duration = ($this->exam?->duration_minutes ?? 0) + $this->extra_time_minutes;
 
-        return $this->started_at->copy()->addMinutes($duration);
+        return $this->started_at->addMinutes($duration);
     }
 }

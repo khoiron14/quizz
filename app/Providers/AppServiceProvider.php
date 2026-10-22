@@ -2,6 +2,12 @@
 
 namespace App\Providers;
 
+use App\Repositories\Contracts\AttemptRepositoryInterface;
+use App\Repositories\Contracts\ExamRepositoryInterface;
+use App\Repositories\Contracts\QuestionRepositoryInterface;
+use App\Repositories\Eloquent\AttemptRepository;
+use App\Repositories\Eloquent\ExamRepository;
+use App\Repositories\Eloquent\QuestionRepository;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +21,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            ExamRepositoryInterface::class,
+            ExamRepository::class
+        );
+        $this->app->bind(
+            QuestionRepositoryInterface::class,
+            QuestionRepository::class
+        );
+        $this->app->bind(
+            AttemptRepositoryInterface::class,
+            AttemptRepository::class
+        );
     }
 
     /**
