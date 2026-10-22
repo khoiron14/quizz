@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, FolderGit2, LayoutGrid } from '@lucide/vue';
+import { BookOpen, FileCheck, FolderGit2, GraduationCap, LayoutGrid } from '@lucide/vue';
+import { computed } from 'vue';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -14,16 +15,39 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
+import { useCan } from '@/composables/useCan';
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+const { can } = useCan();
+
+const mainNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+
+    if (can('exams.take')) {
+        items.push({
+            title: 'Ujian CBT',
+            href: '/exam/token',
+            icon: FileCheck,
+        });
+    }
+
+    if (can('exams.view') || can('exams.create')) {
+        items.push({
+            title: 'Kelola Ujian',
+            href: '/teacher/exams',
+            icon: GraduationCap,
+        });
+    }
+
+    return items;
+});
 
 const footerNavItems: NavItem[] = [
     {
