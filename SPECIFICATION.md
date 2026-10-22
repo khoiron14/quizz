@@ -247,7 +247,19 @@ docker compose exec app php artisan migrate --seed
 
 ---
 
-## 8. STEP-BY-STEP PHASED IMPLEMENTATION ROADMAP
+## 8. GIT COMMIT STRATEGY & DISCIPLINE
+
+- **Milestone-Driven Commits**: Create clean, conventional Git commits only when a meaningful milestone is completed and verified (e.g., at the conclusion of each phase).
+- **No Commit Spam**: Avoid committing after every single file creation or minor tweak. Keep the git history tidy and descriptive.
+- **Local Commits Only**: Automatically commit locally (`git commit -m "feat(phase-X): ..."`). **NEVER run `git push`**.
+- Example commit messages:
+  - `feat(core): phase 1 - foundation, models, uuid migrations, and spatie permissions`
+  - `feat(repositories): phase 2 - repository contracts, eloquent implementations, and services`
+  - `feat(cbt-engine): phase 3 - backend actions, atomic upsert, and caching`
+
+---
+
+## 9. STEP-BY-STEP PHASED IMPLEMENTATION ROADMAP
 
 > [!IMPORTANT]
 > The agent MUST implement one phase at a time and stop at the end of each phase to await user approval (`"continue"` or `"lanjut"`).

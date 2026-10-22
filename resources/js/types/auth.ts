@@ -1,5 +1,5 @@
 export type User = {
-    id: number;
+    id: string;
     name: string;
     email: string;
     avatar?: string;
@@ -11,6 +11,8 @@ export type User = {
 
 export type Auth = {
     user: User;
+    roles: string[];
+    permissions: string[];
 };
 
 export type Passkey = {
