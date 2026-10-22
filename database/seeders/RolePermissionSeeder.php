@@ -37,7 +37,6 @@ class RolePermissionSeeder extends Seeder
         // Student Role & Permissions
         $studentRole = Role::firstOrCreate(['name' => 'student', 'guard_name' => 'web']);
         $studentRole->syncPermissions([
-            'exams.view',
             'exams.take',
         ]);
 
