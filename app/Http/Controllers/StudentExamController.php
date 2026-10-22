@@ -44,7 +44,19 @@ class StudentExamController extends Controller
     public function start(StartExamRequest $request, StartExamAction $startExam): Response|RedirectResponse|JsonResponse
     {
         $token = $request->validated('token');
-        $result = $startExam->execute($token, $request->user());
+
+        try {
+            $result = $startExam->execute($token, $request->user());
+        } catch (\RuntimeException $e) {
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'errors' => ['token' => [$e->getMessage()]],
+                ], HttpResponse::HTTP_UNPROCESSABLE_ENTITY);
+            }
+
+            return back()->withErrors(['token' => $e->getMessage()])->withInput();
+        }
 
         if ($request->wantsJson()) {
             return response()->json([
