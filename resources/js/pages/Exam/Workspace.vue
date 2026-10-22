@@ -412,3 +412,4 @@ const timer = useExamTimer(props.attempt.deadline, () => {
         </Dialog>
     </div>
 </template>
+
