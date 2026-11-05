@@ -53,7 +53,10 @@ export function useCbtEngine(
     // 4. In-Memory Question Navigation (0ms Latency)
     const currentIndex = ref<number>(0);
 
-    const currentQuestion = computed<QuestionItem>(() => {
+    const currentQuestion = computed<QuestionItem | undefined>(() => {
+        if (questions.length === 0) {
+            return undefined;
+        }
         return questions[currentIndex.value] ?? questions[0];
     });
 
@@ -62,6 +65,9 @@ export function useCbtEngine(
     const currentAnswer = computed<AnswerItem>({
         get() {
             const qId = currentQuestion.value?.id;
+            if (!qId) {
+                return { answer_content: null, is_flagged: false };
+            }
             return (
                 answers.value[qId] ?? { answer_content: null, is_flagged: false }
             );
@@ -171,6 +177,9 @@ export function useCbtEngine(
 
     // 6. Action Handlers
     const selectMultipleChoice = (key: string) => {
+        if (!currentQuestion.value) {
+            return;
+        }
         const qId = currentQuestion.value.id;
         const current = answers.value[qId] ?? {
             answer_content: null,
@@ -188,6 +197,9 @@ export function useCbtEngine(
     };
 
     const updateEssayContent = (content: string) => {
+        if (!currentQuestion.value) {
+            return;
+        }
         const qId = currentQuestion.value.id;
         const current = answers.value[qId] ?? {
             answer_content: null,
@@ -206,6 +218,9 @@ export function useCbtEngine(
     };
 
     const toggleFlag = () => {
+        if (!currentQuestion.value) {
+            return;
+        }
         const qId = currentQuestion.value.id;
         const current = answers.value[qId] ?? {
             answer_content: null,

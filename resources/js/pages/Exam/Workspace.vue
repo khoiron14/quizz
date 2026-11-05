@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import {
     AlertTriangle,
     ArrowLeft,
@@ -152,6 +152,7 @@ const timer = useExamTimer(props.attempt.deadline, () => {
                     variant="default"
                     size="sm"
                     class="font-medium bg-emerald-600 hover:bg-emerald-700 text-white gap-1.5"
+                    :disabled="totalQuestions === 0"
                     @click="showSubmitDialog = true"
                 >
                     <Send class="h-3.5 w-3.5" />
@@ -162,7 +163,31 @@ const timer = useExamTimer(props.attempt.deadline, () => {
 
         <!-- Main Workspace: Question Area (Left) + Navigator Grid (Right) -->
         <div class="flex-1 container mx-auto p-4 sm:p-6 lg:p-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            <!-- Empty State when Exam has 0 questions -->
+            <div v-if="totalQuestions === 0 || !currentQuestion" class="flex items-center justify-center py-16">
+                <Card class="border-dashed max-w-lg w-full text-center p-8 shadow-xs">
+                    <CardContent class="space-y-4 pt-6">
+                        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/10 text-amber-500">
+                            <AlertTriangle class="h-8 w-8" />
+                        </div>
+                        <div class="space-y-2">
+                            <h2 class="text-xl font-bold text-foreground">Ujian Belum Memiliki Soal</h2>
+                            <p class="text-sm text-muted-foreground leading-relaxed">
+                                Ujian ini belum memiliki butir soal yang diunggah oleh guru. Silakan tambahkan soal melalui menu <strong>Kelola Ujian</strong> di akun guru atau hubungi pengawas ujian.
+                            </p>
+                        </div>
+                        <div class="pt-4 flex justify-center gap-3">
+                            <Button as-child variant="outline">
+                                <Link href="/dashboard">
+                                    Kembali ke Dashboard
+                                </Link>
+                            </Button>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <div v-else class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 <!-- Question Column (8 Cols) -->
                 <main class="lg:col-span-8 space-y-4">
                     <Card class="border shadow-xs">
